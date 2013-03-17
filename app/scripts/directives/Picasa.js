@@ -1,4 +1,4 @@
-daaSite.directive('picasa', ['picasa', function(picasa) {
+angularPicasa.directive('picasa', ['picasa', function(picasa) {
   return {
     //works on attribute
     restrict: 'A',

@@ -1,6 +1,6 @@
 "use strict";
 
-daaSite.factory('picasa', ['$http', '$q', function($http, $q) {
+angularPicasa.factory('picasa', ['$http', '$q', function($http, $q) {
   // Service logic
 
   $http.defaults.useXDomain = true;
