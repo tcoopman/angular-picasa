@@ -6,23 +6,34 @@ angularPicasa.factory('picasa', ['$http', '$q', function($http, $q) {
   $http.defaults.useXDomain = true;
   
   var current = $q.defer();
+
+  function parsePhoto(entry) {
+    var lastThumb = entry.media$group.media$thumbnail.length - 1
+    var photo = {
+      thumb: entry.media$group.media$thumbnail[lastThumb].url,
+      thumbHeight: entry.media$group.media$thumbnail[lastThumb].height,
+      thumbWidth: entry.media$group.media$thumbnail[lastThumb].width,
+      url: entry.media$group.media$content[0].url
+    };
+    return photo;
+  }
   
   function parsePhotos(url) {
     var d = $q.defer();
     var photo;
     var photos = [];
     loadPhotos(url).then(function(data) {
-      data.feed.entry.forEach(function(entry) {
-        photo = {
-          thumb: entry.media$group.media$thumbnail[2].url,
-          thumbHeight: entry.media$group.media$thumbnail[2].height,
-          thumbWidth: entry.media$group.media$thumbnail[2].width,
-          url: entry.media$group.media$content[0].url
-        };
-        photos.push(photo);
-      });
+      if (!data.feed) {
+        photos.push(parsePhoto(data.entry));
+      } else {
+        data.feed.entry.forEach(function(entry) {
+          photos.push(parsePhoto(entry));
+        });
+      }
+      console.log("resolving");
       current.resolve(photos[0]);
       d.resolve(photos);
+      console.log("resolving");
       
     });
     return d.promise;

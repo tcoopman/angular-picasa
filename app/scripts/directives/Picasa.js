@@ -3,15 +3,23 @@ angularPicasa.directive('picasa', ['picasa', function(picasa) {
     //works on attribute
     restrict: 'A',
     replace: true,
-    template: '<div ng-show="photos"><div class="picasa-photo"><img src="{{current.url}}"></div>' +
+    template: '<div ng-show="ready"><div class="picasa-photo"><img src="{{current.url}}" height="{{height}}" width="{{width}}"></div>' +
                         '<div class="picasa-thumbs" ng-mousemove="move($event)">' +
                         '<ul ng-repeat="photo in photos">' + 
-                        '<li><a ng-mouseover="setCurrent(photo)"><img src="{{photo.thumb}}" height="200"></a></li>' + 
+                        '<li><a ng-mouseover="setCurrent(photo)"><img src="{{photo.thumb}}" height="{{thumbHeight}}" width="{{thumbWidth}}"></a></li>' + 
                         '</ul>' + 
                         '</div></div>',
     link: function(scope, element, attrs) {
-      scope.photos = picasa.get(attrs.picasa);
-      scope.current = picasa.current();
+      scope.height = attrs.height;
+      scope.width = attrs.width;
+      scope.thumbWidth = attrs.thumbWidth;
+      scope.thumbHeight = attrs.thumbHeight;
+      console.log(scope.thumbWidth);
+      picasa.get(attrs.picasa).then(function(data) {
+        scope.photos = data;
+        scope.current = picasa.current();
+        scope.ready = true;
+      })
       
       scope.setCurrent = function(photo) {
         scope.current = photo;
