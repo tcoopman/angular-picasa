@@ -1,3 +1,4 @@
 'use strict';
 
-var angularPicasa = angular.module('angularPicasa', []);
+var app = angular.module('testApp', ['angularPicasa']);
+
