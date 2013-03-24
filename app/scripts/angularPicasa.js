@@ -6,6 +6,7 @@ angular.module('angularPicasa', [])
       //works on attribute
       restrict: 'A',
       replace: true,
+      scope: {},
       template: '<div ng-show="ready"><div class="picasa-photo"><img src="{{current.url}}" height="{{height}}" width="{{width}}"></div>' +
                           '<div class="picasa-thumbs" ng-mousemove="move($event)">' +
                           '<ul ng-repeat="photo in photos">' + 
