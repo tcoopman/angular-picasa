@@ -21,11 +21,12 @@ angular.module('angularPicasa', [])
         console.log(scope.thumbWidth);
         picasaService.get(attrs.picasa).then(function(data) {
           scope.photos = data;
-          scope.current = picasaService.current();
+          scope.current = data[0];
           scope.ready = true;
         })
         
         scope.setCurrent = function(photo) {
+          console.log('photo');
           scope.current = photo;
         };
         scope.move = function(event) {
@@ -52,8 +53,6 @@ angular.module('angularPicasa', [])
 
     $http.defaults.useXDomain = true;
     
-    var current = $q.defer();
-
     function parsePhoto(entry) {
       var lastThumb = entry.media$group.media$thumbnail.length - 1
       var photo = {
@@ -77,10 +76,7 @@ angular.module('angularPicasa', [])
             photos.push(parsePhoto(entry));
           });
         }
-        console.log("resolving");
-        current.resolve(photos[0]);
         d.resolve(photos);
-        console.log("resolving");
         
       });
       return d.promise;
@@ -98,9 +94,6 @@ angular.module('angularPicasa', [])
     return {
       get : function (url) {
         return parsePhotos(url);
-      },
-      current : function () {
-        return current.promise;
       }
     };
   }]);
