@@ -6,7 +6,9 @@ angular.module('angularPicasa', [])
       //works on attribute
       restrict: 'A',
       replace: true,
-      scope: {},
+      scope: { 
+        picasa: '@'
+      },
       template: '<div ng-show="ready"><div class="picasa-photo"><img src="{{current.url}}" height="{{height}}" width="{{width}}"></div>' +
                           '<div class="picasa-thumbs" ng-mousemove="move($event)">' +
                           '<ul ng-repeat="photo in photos">' + 
@@ -18,15 +20,15 @@ angular.module('angularPicasa', [])
         scope.width = attrs.width;
         scope.thumbWidth = attrs.thumbWidth;
         scope.thumbHeight = attrs.thumbHeight;
-        console.log(scope.thumbWidth);
-        picasaService.get(attrs.picasa).then(function(data) {
-          scope.photos = data;
-          scope.current = data[0];
-          scope.ready = true;
-        })
+        scope.$watch('picasa', function () {
+          picasaService.get(attrs.picasa).then(function(data) {
+            scope.photos = data;
+            scope.current = data[0];
+            scope.ready = true;
+          })
+        });
         
         scope.setCurrent = function(photo) {
-          console.log('photo');
           scope.current = photo;
         };
         scope.move = function(event) {
@@ -97,3 +99,4 @@ angular.module('angularPicasa', [])
       }
     };
   }]);
+
