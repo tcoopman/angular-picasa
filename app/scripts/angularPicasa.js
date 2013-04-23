@@ -74,9 +74,10 @@ angular.module('angularPicasa', [])
         if (!data.feed) {
           photos.push(parsePhoto(data.entry));
         } else {
-          data.feed.entry.forEach(function(entry) {
-            photos.push(parsePhoto(entry));
-          });
+          var entries = data.feed.entry;
+          for (var i = 0; i < entries.length; i++) {
+            photos.push(parsePhoto(entries[i]));
+          }
         }
         d.resolve(photos);
         
