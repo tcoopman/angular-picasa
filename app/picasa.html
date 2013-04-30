@@ -1,0 +1,58 @@
+<div ng-show="ready">
+  <div class="picasa-photo">
+    <div ng-switch on="size">
+      <span ng-switch-when="height">
+        <img src="{{current.url}}" height="{{height}}">
+      </span>
+      <span ng-switch-when="width">
+        <img src="{{current.url}}" width="{{width}}">
+      </span>
+      <span ng-switch-when="both">
+        <img src="{{current.url}}" height="{{height}}" width="{{width}}">
+      </span>
+      <span ng-switch-default>
+        <img src="{{current.url}}">
+      </span>
+    </div>
+  </div>
+  <div class="picasa-thumbs" ng-mousemove="move($event)">
+    <div ng-switch on="thumbSize">
+      <span ng-switch-when="height">
+        <ul ng-repeat="photo in photos">
+          <li>
+            <a ng-mouseover="setCurrent(photo)">
+              <img src="{{photo.thumb}}" height="{{thumbHeight}}">
+            </a>
+          </li>
+        </ul>
+      </span>
+      <span ng-switch-when="width">
+        <ul ng-repeat="photo in photos">
+          <li>
+            <a ng-mouseover="setCurrent(photo)">
+              <img src="{{photo.thumb}}" width="{{thumbWidth}}">
+            </a>
+          </li>
+        </ul>
+      </span>
+      <span ng-switch-when="both">
+        <ul ng-repeat="photo in photos">
+          <li>
+            <a ng-mouseover="setCurrent(photo)">
+              <img src="{{photo.thumb}}" height="{{thumbHeight}}" width="{{thumbWidth}}">
+            </a>
+          </li>
+        </ul>
+      </span>
+      <span ng-switch-default>
+        <ul ng-repeat="photo in photos">
+          <li>
+            <a ng-mouseover="setCurrent(photo)">
+              <img src="{{photo.thumb}}">
+            </a>
+          </li>
+        </ul>
+      </span>
+    </div>
+  </div>
+</div>

@@ -9,17 +9,34 @@ angular.module('angularPicasa', [])
       scope: { 
         picasa: '@'
       },
-      template: '<div ng-show="ready"><div class="picasa-photo"><img src="{{current.url}}" height="{{height}}" width="{{width}}"></div>' +
-                          '<div class="picasa-thumbs" ng-mousemove="move($event)">' +
-                          '<ul ng-repeat="photo in photos">' + 
-                          '<li><a ng-mouseover="setCurrent(photo)"><img src="{{photo.thumb}}" height="{{thumbHeight}}" width="{{thumbWidth}}"></a></li>' + 
-                          '</ul>' + 
-                          '</div></div>',
+      templateUrl: 'picasa.html',
       link: function(scope, element, attrs) {
+        if (attrs.height !== undefined && attrs.width !== undefined) {
+          scope.size = 'both';
+        } else {
+          if (attrs.height !== undefined) {
+            scope.size = 'height';
+          }
+          if (attrs.width !== undefined) {
+            scope.size = 'width';
+          }
+        }
         scope.height = attrs.height;
         scope.width = attrs.width;
-        scope.thumbWidth = attrs.thumbWidth;
+
+        if (attrs.thumbHeight !== undefined && attrs.thumbWidth !== undefined) {
+          scope.thumbSize = 'both';
+        } else {
+          if (attrs.thumbHeight !== undefined) {
+            scope.thumbSize = 'height';
+          }
+          if (attrs.thumbWidth !== undefined) {
+            scope.thumbSize = 'width';
+          }
+        }
         scope.thumbHeight = attrs.thumbHeight;
+        scope.thumbWidth = attrs.thumbWidth;
+
         scope.$watch('picasa', function () {
           picasaService.get(attrs.picasa).then(function(data) {
             scope.photos = data;
@@ -32,7 +49,7 @@ angular.module('angularPicasa', [])
           scope.current = photo;
         };
         scope.move = function(event) {
-          var thumbDiv = element[0].lastChild;
+          var thumbDiv = element[0].lastElementChild;
           var x = event.clientX - thumbDiv.offsetLeft;
           var center = thumbDiv.offsetWidth / 2;
           var factor = 20;
