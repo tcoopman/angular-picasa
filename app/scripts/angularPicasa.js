@@ -38,7 +38,10 @@ angular.module('angularPicasa', [])
         scope.thumbWidth = attrs.thumbWidth;
 
         scope.$watch('picasa', function () {
-          picasaService.get(attrs.picasa).then(function(data) {
+          if (scope.picasa === '') {
+            return;
+          }
+          picasaService.get(scope.picasa).then(function(data) {
             scope.photos = data;
             scope.current = data[0];
             scope.ready = true;
